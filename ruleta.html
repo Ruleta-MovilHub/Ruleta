@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="ruleta.css">
+    <title>Ruleta</title>
+</head>
+<body>
+
+  <div class="container"></div>
+
+  <div class="page-content">
+
+    <h1 class="titulo">¡Gira la Ruleta!</h1>
+
+    <div class="ruleta-container">
+        <div class="pointer"></div>
+        <div class="ruleta" id="ruleta">
+            <div class="opcion" style="--i:0;">Cine de<br>Verano</div>
+            <div class="opcion" style="--i:1;">Meeting</div>
+            <div class="opcion" style="--i:2;">Programa<br>de radio</div>
+            <div class="opcion" style="--i:3;">Discoteca<br>Movil</div>
+            <div class="opcion" style="--i:4;">Karaoke</div>
+        </div>
+        <div class="centro">
+          <img src="Imagenes/Logo.png" alt="logo" />
+        </div>
+    </div>
+
+    <button type="button" class="btn" id="btnGirar">
+      <strong>✦ GIRAR ✦</strong>
+      <div id="container-stars">
+        <div id="stars"></div>
+      </div>
+      <div id="glow">
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </button>
+
+  </div>
+
+  <script>
+    const btnGirar = document.getElementById('btnGirar');
+    const ruleta = document.getElementById('ruleta');
+    let rotacionActual = 0;
+    let girando = false;
+
+    btnGirar.addEventListener('click', () => {
+        if (girando) return;
+        girando = true;
+        btnGirar.style.opacity = '0.6';
+        const rotacionExtra = Math.floor(Math.random() * 360) + 1800;
+        rotacionActual += rotacionExtra;
+        ruleta.style.transform = `rotate(${rotacionActual}deg)`;
+        setTimeout(() => {
+          girando = false;
+          btnGirar.style.opacity = '1';
+        }, 4200);
+    });
+  </script>
+</body>
+</html>
