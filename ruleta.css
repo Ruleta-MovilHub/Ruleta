@@ -1,0 +1,382 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Bebas+Neue&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #000;
+}
+
+/* ── FONDO ── */
+.container {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  --c: #09f;
+  background-color: #000;
+  background-image:
+    radial-gradient(4px 100px at 0px 235px, var(--c), #0000),
+    radial-gradient(4px 100px at 300px 235px, var(--c), #0000),
+    radial-gradient(1.5px 1.5px at 150px 117.5px, var(--c) 100%, #0000 150%),
+    radial-gradient(4px 100px at 0px 252px, var(--c), #0000),
+    radial-gradient(4px 100px at 300px 252px, var(--c), #0000),
+    radial-gradient(1.5px 1.5px at 150px 126px, var(--c) 100%, #0000 150%),
+    radial-gradient(4px 100px at 0px 150px, var(--c), #0000),
+    radial-gradient(4px 100px at 300px 150px, var(--c), #0000),
+    radial-gradient(1.5px 1.5px at 150px 75px, var(--c) 100%, #0000 150%),
+    radial-gradient(4px 100px at 0px 299px, var(--c), #0000),
+    radial-gradient(4px 100px at 300px 299px, var(--c), #0000),
+    radial-gradient(1.5px 1.5px at 150px 149.5px, var(--c) 100%, #0000 150%);
+  background-size:
+    300px 235px, 300px 235px, 300px 235px,
+    300px 252px, 300px 252px, 300px 252px,
+    300px 150px, 300px 150px, 300px 150px,
+    300px 299px, 300px 299px, 300px 299px;
+  animation: hi 150s linear infinite;
+}
+
+.container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 50% 50%, #0000 0, #0000 2px, hsl(0 0 4%) 2px);
+  background-size: 8px 8px;
+  --f: blur(1em) brightness(6);
+  animation: hii 10s linear infinite;
+}
+
+@keyframes hii {
+  0% { backdrop-filter: var(--f) hue-rotate(0deg); }
+  to  { backdrop-filter: var(--f) hue-rotate(360deg); }
+}
+
+@keyframes hi {
+  0% {
+    background-position:
+      0px 220px, 3px 220px, 151.5px 337.5px,
+      25px 24px, 28px 24px, 176.5px 150px,
+      50px 16px, 53px 16px, 201.5px 91px,
+      175px 235px, 178px 235px, 326.5px 384.5px;
+  }
+  to {
+    background-position:
+      0px 6800px, 3px 6800px, 151.5px 6917.5px,
+      25px 13632px, 28px 13632px, 176.5px 13758px,
+      50px 5416px, 53px 5416px, 201.5px 5491px,
+      175px 13391px, 178px 13391px, 326.5px 13540.5px;
+  }
+}
+
+/* ── CONTENIDO ── */
+.page-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 36px;
+}
+
+/* ── TÍTULO ── */
+.titulo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8rem;
+  letter-spacing: 8px;
+  color: transparent;
+  background: linear-gradient(135deg, #ffdb3b, #fe53bb, #8f51ea, #00d4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(0,212,255,0.5)); }
+  50%       { filter: drop-shadow(0 0 24px rgba(254,83,187,0.7)); }
+}
+
+/* ── RULETA CONTAINER ── */
+.ruleta-container {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  filter: drop-shadow(0 0 20px rgba(0,212,255,0.5)) drop-shadow(0 0 50px rgba(143,81,234,0.35));
+}
+
+/* ── FLECHA alargada apuntando hacia la ruleta desde la derecha ── */
+.pointer {
+  position: absolute;
+  right: -20px;        /* un poco más adentro que antes */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  width: 0;
+  height: 0;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-right: 48px solid white;  /* alargada y apuntando a la izquierda */
+  filter: drop-shadow(0 0 8px #00d4ff) drop-shadow(0 0 16px #fe53bb);
+  animation: pulsePointer 1.5s ease-in-out infinite;
+}
+
+@keyframes pulsePointer {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px #00d4ff) drop-shadow(0 0 4px rgba(0,0,0,0.8));
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px #fe53bb) drop-shadow(0 0 4px rgba(0,0,0,0.8));
+    transform: translateY(-50%) scale(1.15);
+  }
+}
+
+/* ── RULETA ── */
+.ruleta {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 8px solid #1a1a2e;
+  outline: 3px solid rgba(255,255,255,0.12);
+  background: conic-gradient(
+    #ffdb3b 0deg 72deg,
+    #fe53bb 72deg 144deg,
+    #8f51ea 144deg 216deg,
+    #0044ff 216deg 288deg,
+    #00d4ff 288deg 360deg
+  );
+  position: relative;
+  overflow: visible;   /* para que los clavos sobresalgan */
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+}
+
+.ruleta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    rgba(255,255,255,0.25) 0deg 1deg,
+    transparent 1deg 72deg,
+    rgba(255,255,255,0.25) 72deg 73deg,
+    transparent 73deg 144deg,
+    rgba(255,255,255,0.25) 144deg 145deg,
+    transparent 145deg 216deg,
+    rgba(255,255,255,0.25) 216deg 217deg,
+    transparent 217deg 288deg,
+    rgba(255,255,255,0.25) 288deg 289deg,
+    transparent 289deg 360deg
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ruleta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, rgba(255,255,255,0.18) 0%, transparent 55%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── CLAVOS en el borde ── */
+.clavo {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 40% 35%, #fff 0%, #aaa 40%, #555 100%);
+  border-radius: 50%;
+  border: 2px solid #222;
+  box-shadow:
+    0 0 4px rgba(0,0,0,0.8),
+    0 0 8px rgba(255,255,255,0.3),
+    inset 0 1px 2px rgba(255,255,255,0.6);
+  z-index: 5;
+  /* Posición: centro de la ruleta (170px - 7px radio del clavo) en el borde */
+  left: calc(50% + (155px) * cos(calc(36deg * var(--j))) - 7px);
+  top:  calc(50% + (155px) * sin(calc(36deg * var(--j))) - 7px);
+}
+
+/* ── OPCIONES ── */
+.opcion {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 145px;
+  height: 40px;
+  margin-top: -20px;
+  transform-origin: 0 50%;
+  transform: rotate(calc(72deg * var(--i) - 90deg + 36deg));
+  text-align: right;
+  padding-right: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: white;
+  font-family: 'Fredoka One', cursive;
+  font-weight: 400;
+  font-size: 0.9rem;
+  line-height: 1.15;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  user-select: none;
+  z-index: 3;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* ── CENTRO ── */
+.centro {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  border: 4px solid rgba(255,255,255,0.2);
+  box-shadow:
+    0 0 0 3px rgba(0,212,255,0.4),
+    0 4px 15px rgba(0,0,0,0.6);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.centro img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ── BOTÓN ── */
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 14rem;
+  overflow: hidden;
+  height: 3.2rem;
+  background-size: 300% 300%;
+  cursor: pointer;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: 0.5s;
+  animation: gradient_301 5s ease infinite;
+  border: double 4px transparent;
+  background-image: linear-gradient(#212121, #212121),
+    linear-gradient(137.48deg, #ffdb3b 10%, #fe53bb 45%, #8f51ea 67%, #0044ff 87%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  position: relative;
+}
+
+#container-stars {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+}
+
+strong {
+  z-index: 2;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255,255,255,0.8);
+}
+
+#glow {
+  position: absolute;
+  display: flex;
+  width: 12rem;
+}
+
+.circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.circle:nth-of-type(1) { background: rgba(254, 83, 186, 0.636); }
+.circle:nth-of-type(2) { background: rgba(142, 81, 234, 0.704); }
+
+.btn:hover #container-stars { z-index: 1; background-color: #212121; }
+.btn:hover { transform: scale(1.1); }
+.btn:active {
+  border: double 4px #fe53bb;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+.btn:active .circle { background: #fe53bb; }
+
+#stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+#stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+#stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  animation: animStar 60s linear infinite;
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+@keyframes animStar {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-135rem); }
+}
+
+@keyframes animStarRotate {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0); }
+}
+
+@keyframes gradient_301 {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse_3011 {
+  0%   { transform: scale(0.75); box-shadow: 0 0 0 0 rgba(0,0,0,0.7); }
+  70%  { transform: scale(1);    box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+  100% { transform: scale(0.75); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+}
