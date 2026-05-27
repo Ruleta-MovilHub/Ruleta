@@ -46,17 +46,15 @@
     <span id="mensajeTexto"></span>
   </div>
 
-  <audio id="sonidoRuleta" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" loop></audio>
-
   <script>
     const btnGirar = document.getElementById('btnGirar');
     const ruleta = document.getElementById('ruleta');
-    const sonido = document.getElementById('sonidoRuleta');
     const mensajeContainer = document.getElementById('mensajeContainer');
     const mensajeTexto = document.getElementById('mensajeTexto');
     
     let rotacionActual = 0;
     let girando = false;
+    let mensajeTimeout; // Variable para controlar el tiempo del mensaje
 
     const opciones = [
       "Cine de Verano",
@@ -70,12 +68,11 @@
         if (girando) return;
         girando = true;
 
+        // Ocultar mensaje previo y limpiar su temporizador si se vuelve a girar rápido
         mensajeContainer.classList.remove('mostrar');
-        btnGirar.style.opacity = '0.6';
+        clearTimeout(mensajeTimeout);
         
-
-        sonido.currentTime = 0;
-        sonido.play();
+        btnGirar.style.opacity = '0.6';
 
         const rotacionExtra = Math.floor(Math.random() * 360) + 1800; 
         rotacionActual += rotacionExtra;
@@ -85,8 +82,6 @@
           girando = false;
           btnGirar.style.opacity = '1';
           
-          sonido.pause();
-          
           const gradosNormalizados = rotacionActual % 360;
           let anguloOriginal = (90 - gradosNormalizados) % 360;
           
@@ -94,14 +89,22 @@
 
           const indice = Math.floor(anguloOriginal / 72);
           
+          // Mostrar mensaje
           mensajeTexto.innerText = opciones[indice];
           mensajeContainer.classList.add('mostrar');
+          
+          // Desaparecer automáticamente a los 5 segundos (5000ms)
+          mensajeTimeout = setTimeout(() => {
+            mensajeContainer.classList.remove('mostrar');
+          }, 5000);
           
         }, 4200); 
     });
 
+    // Desaparecer inmediatamente si el usuario hace clic sobre el mensaje o la pantalla
     mensajeContainer.addEventListener('click', () => {
       mensajeContainer.classList.remove('mostrar');
+      clearTimeout(mensajeTimeout); // Limpiamos el temporizador para evitar conflictos
     });
   </script>
 </body>
