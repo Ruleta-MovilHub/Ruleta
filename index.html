@@ -41,23 +41,67 @@
 
   </div>
 
+  <div id="mensajeContainer" class="mensaje-popup">
+    ¡HA SALIDO!
+    <span id="mensajeTexto"></span>
+  </div>
+
+  <audio id="sonidoRuleta" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" loop></audio>
+
   <script>
     const btnGirar = document.getElementById('btnGirar');
     const ruleta = document.getElementById('ruleta');
+    const sonido = document.getElementById('sonidoRuleta');
+    const mensajeContainer = document.getElementById('mensajeContainer');
+    const mensajeTexto = document.getElementById('mensajeTexto');
+    
     let rotacionActual = 0;
     let girando = false;
+
+    const opciones = [
+      "Cine de Verano",
+      "Meeting",
+      "Programa de radio",
+      "Discoteca Movil",
+      "Karaoke"
+    ];
 
     btnGirar.addEventListener('click', () => {
         if (girando) return;
         girando = true;
+
+        mensajeContainer.classList.remove('mostrar');
         btnGirar.style.opacity = '0.6';
-        const rotacionExtra = Math.floor(Math.random() * 360) + 1800;
+        
+
+        sonido.currentTime = 0;
+        sonido.play();
+
+        const rotacionExtra = Math.floor(Math.random() * 360) + 1800; 
         rotacionActual += rotacionExtra;
         ruleta.style.transform = `rotate(${rotacionActual}deg)`;
+
         setTimeout(() => {
           girando = false;
           btnGirar.style.opacity = '1';
-        }, 4200);
+          
+          sonido.pause();
+          
+          const gradosNormalizados = rotacionActual % 360;
+          let anguloOriginal = (90 - gradosNormalizados) % 360;
+          
+          if (anguloOriginal < 0) anguloOriginal += 360;
+
+          const indice = Math.floor(anguloOriginal / 72);
+          
+          mensajeTexto.innerText = opciones[indice];
+          mensajeContainer.classList.add('mostrar');
+          
+        }, 4200); 
+    });
+
+    mensajeContainer.addEventListener('click', () => {
+      mensajeContainer.classList.remove('mostrar');
     });
   </script>
 </body>
