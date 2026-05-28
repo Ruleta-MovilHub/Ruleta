@@ -7,15 +7,30 @@
     <title>Ruleta</title>
 </head>
 <body>
-
   <div class="container"></div>
-
   <div class="page-content">
-
     <h1 class="titulo">¡Gira la Ruleta!</h1>
-
     <div class="ruleta-container">
-        <div class="pointer"></div>
+
+        <svg class="pointer" viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="flechaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="50%" stop-color="#c8e8ff"/>
+              <stop offset="100%" stop-color="#7ab8e8"/>
+            </linearGradient>
+            <filter id="sombra" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.6)"/>
+              <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="rgba(0,180,255,0.6)"/>
+            </filter>
+          </defs>
+          <!-- Flecha apuntando a la IZQUIERDA (hacia la ruleta) -->
+          <polygon points="2,18 52,2 46,18 52,34" fill="url(#flechaGrad)" filter="url(#sombra)"/>
+          <polygon points="2,18 52,2 46,18 52,34" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
+          <!-- Brillo interior -->
+          <polygon points="5,18 48,5 43,18" fill="rgba(255,255,255,0.4)"/>
+        </svg>
+
         <div class="ruleta" id="ruleta">
             <div class="opcion" style="--i:0;">Cine de<br>Verano</div>
             <div class="opcion" style="--i:1;">Meeting</div>
@@ -30,20 +45,16 @@
 
     <button type="button" class="btn" id="btnGirar">
       <strong>✦ GIRAR ✦</strong>
-      <div id="container-stars">
-        <div id="stars"></div>
-      </div>
-      <div id="glow">
-        <div class="circle"></div>
-        <div class="circle"></div>
-      </div>
+      <div id="container-stars"><div id="stars"></div></div>
+      <div id="glow"><div class="circle"></div><div class="circle"></div></div>
     </button>
-
   </div>
 
   <div id="mensajeContainer" class="mensaje-popup">
+    <div class="confeti" id="confeti"></div>
     ¡HA SALIDO!
     <span id="mensajeTexto"></span>
+    <small>Toca para cerrar</small>
   </div>
 
   <script>
@@ -51,60 +62,71 @@
     const ruleta = document.getElementById('ruleta');
     const mensajeContainer = document.getElementById('mensajeContainer');
     const mensajeTexto = document.getElementById('mensajeTexto');
-    
+    const confeti = document.getElementById('confeti');
+
     let rotacionActual = 0;
     let girando = false;
-    let mensajeTimeout; // Variable para controlar el tiempo del mensaje
+    let mensajeTimeout;
 
     const opciones = [
       "Cine de Verano",
       "Meeting",
-      "Programa de radio",
+      "Programa de Radio",
       "Discoteca Movil",
       "Karaoke"
     ];
 
+    const coloresConfeti = ['#ffdb3b','#fe53bb','#8f51ea','#0044ff','#00d4ff','#ff6b35'];
+
+    function lanzarConfeti() {
+      confeti.innerHTML = '';
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'papel';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.background = coloresConfeti[Math.floor(Math.random() * coloresConfeti.length)];
+        p.style.animationDelay = Math.random() * 0.8 + 's';
+        p.style.animationDuration = (Math.random() * 1 + 1) + 's';
+        p.style.width = (Math.random() * 8 + 5) + 'px';
+        p.style.height = (Math.random() * 8 + 5) + 'px';
+        p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        confeti.appendChild(p);
+      }
+    }
+
     btnGirar.addEventListener('click', () => {
         if (girando) return;
         girando = true;
-
-        // Ocultar mensaje previo y limpiar su temporizador si se vuelve a girar rápido
         mensajeContainer.classList.remove('mostrar');
         clearTimeout(mensajeTimeout);
-        
         btnGirar.style.opacity = '0.6';
 
-        const rotacionExtra = Math.floor(Math.random() * 360) + 1800; 
+        const rotacionExtra = Math.floor(Math.random() * 360) + 1800;
         rotacionActual += rotacionExtra;
         ruleta.style.transform = `rotate(${rotacionActual}deg)`;
 
         setTimeout(() => {
           girando = false;
           btnGirar.style.opacity = '1';
-          
+
           const gradosNormalizados = rotacionActual % 360;
           let anguloOriginal = (90 - gradosNormalizados) % 360;
-          
           if (anguloOriginal < 0) anguloOriginal += 360;
-
           const indice = Math.floor(anguloOriginal / 72);
-          
-          // Mostrar mensaje
+
           mensajeTexto.innerText = opciones[indice];
+          lanzarConfeti();
           mensajeContainer.classList.add('mostrar');
-          
-          // Desaparecer automáticamente a los 5 segundos (5000ms)
+
           mensajeTimeout = setTimeout(() => {
             mensajeContainer.classList.remove('mostrar');
-          }, 5000);
-          
-        }, 4200); 
+          }, 6000);
+        }, 4200);
     });
 
-    // Desaparecer inmediatamente si el usuario hace clic sobre el mensaje o la pantalla
     mensajeContainer.addEventListener('click', () => {
       mensajeContainer.classList.remove('mostrar');
-      clearTimeout(mensajeTimeout); // Limpiamos el temporizador para evitar conflictos
+      clearTimeout(mensajeTimeout);
     });
   </script>
 </body>
