@@ -421,9 +421,23 @@ strong {
 /* ── MÓVILES ── */
 @media (max-width: 420px) {
   .titulo { font-size: 2rem; letter-spacing: 4px; }
-  .ruleta-container { width: 290px; height: 290px; }
-  .opcion { width: 120px; font-size: 0.75rem; padding-right: 12px; }
+
+  .page-content { gap: 24px; }
+
+  .ruleta-container { width: 260px; height: 260px; }
+
+  .opcion {
+    width: 108px;
+    font-size: 0.7rem;
+    padding-right: 10px;
+    height: 36px;
+    margin-top: -18px;
+  }
+
   .pointer { right: -46px; width: 56px; height: 36px; }
+
+  .centro { width: 40px; height: 40px; }
+
   .mensaje-popup { padding: 20px 25px; font-size: 1.6rem; width: 85%; }
   .mensaje-popup span { font-size: 2.3rem; }
 }
